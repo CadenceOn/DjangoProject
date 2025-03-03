@@ -99,3 +99,4 @@ def create_offer(request):
 def offer_list(request):
     offers = AnimatorOffer.objects.all()
     return render(request, 'offer_list.html', {'offers': offers})
+
