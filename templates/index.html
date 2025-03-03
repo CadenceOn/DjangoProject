@@ -5,17 +5,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Система заявок на аниматоров</title>
-    {% load static %}
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 </head>
 <body>
-    <h1>Добро пожаловать!</h1>
-
-    <p>Ваш токен: {{ token }}</p>  <!-- Выведем токен на главной странице -->
-
-    <div class="buttons">
-        <a href="{% url 'login' %}" class="btn">Вход</a>
-        <a href="{% url 'register' %}" class="btn">Регистрация</a>
+    <div class="container">
+        <h1>Добро пожаловать в систему заявок на аниматоров!</h1>
+        <p>Организуйте незабываемый детский праздник с нашими аниматорами.</p>
+        {% if user.is_authenticated %}
+            <p>Привет, {{ user.username }}!
+            {% if user.groups.all %}
+                Вы вошли как: {{ user.groups.all.0.name }}.
+            {% endif %}
+            <a href="{% url 'create_request' %}" class="btn">Создать заявку</a>
+            <a href="{% url 'logout' %}" class="btn btn-logout">Выйти</a>
+        {% else %}
+            <div class="buttons">
+                <a href="{% url 'login' %}" class="btn">Вход</a>
+                <a href="{% url 'register' %}" class="btn">Регистрация</a>
+            </div>
+        {% endif %}
+        {% if messages %}
+            {% for message in messages %}
+                <div class="message {{ message.tags }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
     </div>
 </body>
 </html>
