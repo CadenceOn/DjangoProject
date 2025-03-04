@@ -5,30 +5,49 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Система заявок на аниматоров</title>
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
     <div class="container">
-        <h1>Добро пожаловать в систему заявок на аниматоров!</h1>
-        <p>Организуйте незабываемый детский праздник с нашими аниматорами.</p>
-        {% if user.is_authenticated %}
-            <p>Привет, {{ user.username }}!
-            {% if user.groups.all %}
-                Вы вошли как: {{ user.groups.all.0.name }}.
+        <header class="header">
+            <h1><i class="fas fa-sparkles"></i> Система заявок на аниматоров <i class="fas fa-sparkles"></i></h1>
+            <p>Организуйте незабываемый детский праздник с нашими аниматорами!</p>
+        </header>
+
+        <div class="content">
+            {% if user.is_authenticated %}
+                <p class="greeting">Привет, <span>{{ user.username }}</span>!
+                {% if user.groups.all %}
+                    Вы вошли как: <strong>{{ user.groups.all.0.name }}</strong>.
+                {% endif %}
+                </p>
+                <div class="buttons">
+                    <a href="{% url 'create_request' %}" class="btn btn-primary"><i class="fas fa-plus"></i> Создать заявку</a>
+                    <a href="{% url 'logout' %}" class="btn btn-secondary"><i class="fas fa-sign-out-alt"></i> Выйти</a>
+                </div>
+            {% else %}
+                <div class="buttons">
+                    <a href="{% url 'login' %}" class="btn btn-primary"><i class="fas fa-sign-in-alt"></i> Вход</a>
+                    <a href="{% url 'register' %}" class="btn btn-secondary"><i class="fas fa-user-plus"></i> Регистрация</a>
+                </div>
             {% endif %}
-            <a href="{% url 'create_request' %}" class="btn">Создать заявку</a>
-            <a href="{% url 'logout' %}" class="btn btn-logout">Выйти</a>
-        {% else %}
-            <div class="buttons">
-                <a href="{% url 'login' %}" class="btn">Вход</a>
-                <a href="{% url 'register' %}" class="btn">Регистрация</a>
+        </div>
+
+        {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                    <div class="message {{ message.tags }}">
+                        <i class="fas fa-info-circle"></i> {{ message }}
+                    </div>
+                {% endfor %}
             </div>
         {% endif %}
-        {% if messages %}
-            {% for message in messages %}
-                <div class="message {{ message.tags }}">{{ message }}</div>
-            {% endfor %}
-        {% endif %}
+
+        <footer class="footer">
+            <p><i class="fas fa-copyright"></i> 2025 Сказочные праздники для ваших детей</p>
+        </footer>
     </div>
 </body>
 </html>
