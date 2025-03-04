@@ -1,9 +1,9 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm
-from django.contrib.auth.decorators import login_required, user_passes_test  # Добавляем импорт user_passes_test
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib import messages
-from django.contrib.auth.models import Group
+from django.contrib.auth.models import User, Group
 from .forms import RegisterForm, RequestForm, AnimatorOfferForm
 from .models import Request, AnimatorOffer
 
@@ -35,10 +35,10 @@ def register_view(request):
         if form.is_valid():
             user = form.save()
             role = form.cleaned_data.get('role')
-            if role == 'customer':  # Исправляем 'сustomer' на 'customer'
-                group, _ = Group.objects.get_or_create(name='customer')  # Исправляем название группы на 'customer'
+            if role == 'customer':
+                group, _ = Group.objects.get_or_create(name='customer')
             else:
-                group, _ = Group.objects.get_or_create(name='animator')  # Исправляем на 'animator'
+                group, _ = Group.objects.get_or_create(name='animator')
             user.groups.add(group)
             username = form.cleaned_data.get('username')
             messages.success(request, f"Аккаунт для {username} успешно создан! Теперь вы можете войти.")
@@ -100,3 +100,17 @@ def offer_list(request):
     offers = AnimatorOffer.objects.all()
     return render(request, 'offer_list.html', {'offers': offers})
 
+@login_required
+@user_passes_test(is_customer, login_url='index')
+def select_offer(request, offer_id):
+    offer = AnimatorOffer.objects.get(id=offer_id)
+    # Проверяем, есть ли у пользователя незавершённая заявка
+    user_request = Request.objects.filter(customer=request.user, status='new').first()
+    if user_request:
+        user_request.animator = offer.animator  # Привязываем аниматора к заявке
+        user_request.status = 'accepted'
+        user_request.save()
+        messages.success(request, f"Вы выбрали объявление от {offer.animator.username}!")
+    else:
+        messages.error(request, "У вас нет активных заявок. Сначала создайте заявку.")
+    return redirect('offer_list')

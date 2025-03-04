@@ -14,49 +14,46 @@ body {
     width: 100%;
     max-width: 1200px;
     margin: 20px auto;
-    padding: 20px;
+    padding: 40px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
     text-align: center;
+    animation: fadeIn 1s ease-in;
 }
 
-/* Заголовок с кнопками авторизации */
-.header {
-    position: relative;
-    padding: 20px 0;
+/* Анимация появления */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
+/* Заголовок */
 .header h1 {
-    font-size: 3em;
-    color: #ff4d6d;
+    font-size: 2.5em;
+    color: #ff4d6d; /* Яркий акцентный цвет */
     margin-bottom: 10px;
     font-weight: 700;
     text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.05);
 }
 
-.header h1 i {
-    color: #ff4d6d;
-    margin: 0 10px;
-}
-
 .header p {
-    font-size: 1.3em;
+    font-size: 1.2em;
     color: #666;
     margin-bottom: 20px;
 }
 
+/* Блок приветствия и кнопок */
 .auth-buttons {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
+    margin: 40px 0; /* Увеличиваем отступы для визуального отделения */
+    padding: 20px 0; /* Добавляем внутренние отступы */
 }
 
+/* Приветствие */
 .greeting {
-    font-size: 1.2em;
+    font-size: 1.3em;
     color: #333;
-    margin: 10px 0 20px;
-    animation: slideIn 1s ease-out;
+    margin-bottom: 15px;
 }
 
 .greeting span {
@@ -64,23 +61,24 @@ body {
     font-weight: 600;
 }
 
+/* Кнопки */
 .buttons {
     display: flex;
-    gap: 15px;
+    justify-content: center;
+    gap: 20px;
     flex-wrap: wrap;
-    justify-content: flex-end;
 }
 
 .btn {
     display: inline-flex;
     align-items: center;
-    padding: 10px 20px;
+    padding: 12px 24px;
     text-decoration: none;
-    font-size: 1em;
+    font-size: 1.1em;
     border-radius: 8px;
     transition: all 0.3s ease;
-    gap: 8px;
     font-weight: 500;
+    gap: 8px;
 }
 
 .btn-primary {
@@ -108,56 +106,51 @@ body {
 }
 
 /* Секция аниматоров */
-.animators {
-    margin: 40px 0;
-}
-
 .animators h2 {
     font-size: 2em;
-    color: #333;
-    margin-bottom: 20px;
+    color: #ff4d6d;
+    margin: 40px 0 20px;
 }
 
 .animator-cards {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 20px;
+    display: flex;
+    flex-wrap: wrap;
     justify-content: center;
+    gap: 20px;
 }
 
 .card {
-    width: 100%;
-    background: white;
+    width: 300px;
+    padding: 20px;
+    background: #fff;
     border-radius: 12px;
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
     cursor: pointer;
-    animation: fadeIn 1s ease-out;
 }
 
 .card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
 }
 
 .card-img {
     width: 100%;
     height: 200px;
     object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 15px;
 }
 
 .card h3 {
     font-size: 1.5em;
-    color: #ff4d6d;
-    margin: 15px 0 10px;
-    font-weight: 600;
+    color: #333;
+    margin-bottom: 10px;
 }
 
 .card p {
     font-size: 1em;
     color: #666;
-    padding: 0 15px 15px;
 }
 
 /* Модальное окно */
@@ -168,7 +161,7 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
+    background: rgba(0, 0, 0, 0.5);
     justify-content: center;
     align-items: center;
     z-index: 1000;
@@ -178,32 +171,19 @@ body {
     background: white;
     padding: 30px;
     border-radius: 12px;
-    width: 90%;
     max-width: 500px;
+    width: 90%;
     position: relative;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-    animation: slideDown 0.5s ease-out;
-}
-
-@keyframes slideDown {
-    from { opacity: 0; transform: translateY(-20px); }
-    to { opacity: 1; transform: translateY(0); }
+    animation: fadeIn 0.3s ease;
 }
 
 .close-btn {
     position: absolute;
-    top: 10px;
+    top: 15px;
     right: 15px;
-    font-size: 24px;
-    color: #666;
+    font-size: 1.5em;
     cursor: pointer;
-    border: none;
-    background: none;
-    transition: color 0.3s ease;
-}
-
-.close-btn:hover {
-    color: #ff4d6d;
+    color: #666;
 }
 
 .modal-img {
@@ -211,60 +191,59 @@ body {
     height: 250px;
     object-fit: cover;
     border-radius: 8px;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
 }
 
 .modal-name {
-    font-size: 2em;
+    font-size: 1.8em;
     color: #ff4d6d;
     margin-bottom: 10px;
-    font-weight: 700;
 }
 
 .modal-description {
-    font-size: 1.1em;
-    color: #333;
+    font-size: 1em;
+    color: #666;
     margin-bottom: 20px;
-    line-height: 1.6;
+}
+
+.modal-action {
+    text-align: center;
 }
 
 .modal-book {
+    background-color: #ff4d6d;
+    color: white;
     padding: 12px 24px;
+    border-radius: 8px;
+    border: none;
     font-size: 1.1em;
-    width: 100%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.modal-book:hover {
+    background-color: #e43c5d;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(255, 77, 109, 0.3);
 }
 
 .modal-notice {
-    font-size: 1.1em;
-    color: #333;
-    margin-bottom: 20px;
+    font-size: 1em;
+    color: #666;
 }
 
 .modal-notice .link {
     color: #4dabf7;
     text-decoration: none;
-    transition: color 0.3s ease;
 }
 
 .modal-notice .link:hover {
-    color: #339af0;
     text-decoration: underline;
-}
-
-/* Анимации */
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes slideIn {
-    from { opacity: 0; transform: translateX(-20px); }
-    to { opacity: 1; transform: translateX(0); }
 }
 
 /* Сообщения */
 .messages {
-    margin-top: 20px;
+    margin: 20px 0;
 }
 
 .message {
@@ -288,53 +267,38 @@ body {
 /* Футер */
 .footer {
     margin-top: 40px;
-    padding: 20px 0;
-    background: linear-gradient(135deg, #ff4d6d, #4dabf7); /* Яркий градиент для футера */
-    color: white;
-    border-radius: 8px;
-    box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.1);
-    animation: fadeIn 1s ease-out;
+    padding-top: 20px;
+    border-top: 1px solid #e9ecef;
 }
 
-.footer-content {
-    max-width: 800px;
-    margin: 0 auto;
-    text-align: center;
-}
-
-.footer p {
-    margin: 10px 0;
+.footer-content p {
     font-size: 1em;
-    font-weight: 500;
-}
-
-.footer i {
-    margin-right: 5px;
+    color: #666;
+    margin: 5px 0;
 }
 
 .social-links {
-    margin-top: 15px;
+    margin-top: 10px;
     display: flex;
     justify-content: center;
     gap: 15px;
 }
 
 .social-link {
-    color: white;
+    color: #ff4d6d;
     font-size: 1.5em;
-    transition: transform 0.3s ease, color 0.3s ease;
+    transition: color 0.3s ease;
 }
 
 .social-link:hover {
-    color: #f8f9fa;
-    transform: scale(1.2);
+    color: #e43c5d;
 }
 
 /* Адаптивность для мобильных устройств */
 @media (max-width: 768px) {
     .container {
         margin: 10px;
-        padding: 10px;
+        padding: 20px;
     }
 
     .header h1 {
@@ -342,37 +306,42 @@ body {
     }
 
     .header p {
-        font-size: 1.1em;
+        font-size: 1em;
     }
 
     .auth-buttons {
-        position: static;
-        margin-top: 20px;
-        align-items: center;
+        margin: 15px 0;
     }
 
-    .buttons {
-        justify-content: center;
-        flex-direction: column;
-        gap: 10px;
+    .greeting {
+        font-size: 1.1em;
     }
 
     .btn {
+        padding: 10px 20px;
+        font-size: 1em;
         width: 100%;
         justify-content: center;
     }
 
-    .animator-cards {
-        grid-template-columns: 1fr;
+    .buttons {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .animators h2 {
+        font-size: 1.5em;
     }
 
     .card {
-        width: 90%;
-        margin-bottom: 20px;
+        width: 100%;
+    }
+
+    .card-img {
+        height: 150px;
     }
 
     .modal-content {
-        width: 85%;
         padding: 20px;
     }
 
@@ -381,26 +350,6 @@ body {
     }
 
     .modal-name {
-        font-size: 1.8em;
-    }
-
-    .modal-description {
-        font-size: 1em;
-    }
-
-    .modal-notice {
-        font-size: 1em;
-    }
-
-    .footer {
-        padding: 15px 0;
-    }
-
-    .footer p {
-        font-size: 0.9em;
-    }
-
-    .social-link {
-        font-size: 1.2em;
+        font-size: 1.5em;
     }
 }

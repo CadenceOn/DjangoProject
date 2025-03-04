@@ -14,25 +14,29 @@
         <header class="header">
             <h1><i class="fas fa-sparkles"></i> Система заявок на аниматоров <i class="fas fa-sparkles"></i></h1>
             <p>Организуйте незабываемый детский праздник с нашими аниматорами!</p>
-            <div class="auth-buttons">
-                {% if user.is_authenticated %}
-                    <p class="greeting">Привет, <span>{{ user.username }}</span>!
-                    {% if user.groups.all %}
-                        Вы вошли как: <strong>{{ user.groups.all.0.name }}</strong>.
-                    {% endif %}
-                    </p>
-                    <div class="buttons">
-                        <a href="{% url 'create_request' %}" class="btn btn-primary"><i class="fas fa-plus"></i> Создать заявку</a>
-                        <a href="{% url 'logout' %}" class="btn btn-secondary"><i class="fas fa-sign-out-alt"></i> Выйти</a>
-                    </div>
-                {% else %}
-                    <div class="buttons">
-                        <a href="{% url 'login' %}" class="btn btn-primary"><i class="fas fa-sign-in-alt"></i> Вход</a>
-                        <a href="{% url 'register' %}" class="btn btn-secondary"><i class="fas fa-user-plus"></i> Регистрация</a>
-                    </div>
-                {% endif %}
-            </div>
         </header>
+
+        <div class="auth-buttons">
+            {% if user.is_authenticated %}
+                <p class="greeting">Привет, <span>{{ user.username }}</span>!
+                {% if user.groups.all %}
+                    Вы вошли как: <strong>{{ user.groups.all.0.name }}</strong>.
+                {% endif %}
+                </p>
+                <div class="buttons">
+                    {% if user.groups.all.0.name == 'customer' %}
+                        <a href="{% url 'create_request' %}" class="btn btn-primary"><i class="fas fa-plus"></i> Создать заявку</a>
+                        <a href="{% url 'offer_list' %}" class="btn btn-primary"><i class="fas fa-list"></i> Посмотреть объявления аниматоров</a>
+                    {% endif %}
+                    <a href="{% url 'logout' %}" class="btn btn-secondary"><i class="fas fa-sign-out-alt"></i> Выйти</a>
+                </div>
+            {% else %}
+                <div class="buttons">
+                    <a href="{% url 'login' %}" class="btn btn-primary"><i class="fas fa-sign-in-alt"></i> Вход</a>
+                    <a href="{% url 'register' %}" class="btn btn-secondary"><i class="fas fa-user-plus"></i> Регистрация</a>
+                </div>
+            {% endif %}
+        </div>
 
         <section class="animators">
             <h2>Наши аниматоры</h2>
