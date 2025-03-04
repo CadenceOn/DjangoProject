@@ -21,11 +21,19 @@
                 <p class="greeting">Привет, <span>{{ user.username }}</span>!
                 {% if user.groups.all %}
                     Вы вошли как: <strong>{{ user.groups.all.0.name }}</strong>.
+                    {% if user.groups.all.0.name == 'customer' %}
+                        <div class="buttons">
+                            <a href="{% url 'create_request' %}" class="btn btn-primary"><i class="fas fa-plus"></i> Создать заявку</a>
+                            <a href="{% url 'offer_list' %}" class="btn btn-primary"><i class="fas fa-list"></i> Посмотреть объявления аниматоров</a>
+                        </div>
+                    {% elif user.groups.all.0.name == 'animator' %}
+                        <div class="buttons">
+                            <a href="{% url 'create_offer' %}" class="btn btn-primary"><i class="fas fa-plus"></i> Создать объявление</a>
+                        </div>
+                    {% endif %}
                 {% endif %}
-                </p>
                 <div class="buttons">
-                    <a href="{% url 'create_request' %}" class="btn btn-primary"><i class="fas fa-plus"></i> Создать заявку</a>
-                    <a href="{% url 'logout' %}" class="btn btn-secondary"><i class="fas fa-sign-out-alt"></i> Выйти</a>
+                    <a href="{% url 'logout' %}" class="btn btn-logout"><i class="fas fa-sign-out-alt"></i> Выйти</a>
                 </div>
             {% else %}
                 <div class="buttons">

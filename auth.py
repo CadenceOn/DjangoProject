@@ -8,7 +8,7 @@ app = Flask(__name__)
 CORS(app)  # Позволяет запросы с фронтенда
 
 # Конфигурация
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite3.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['JWT_SECRET_KEY'] = 'super-secret'  # Замени на более сложный ключ
 
