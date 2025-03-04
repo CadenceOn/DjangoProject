@@ -1,7 +1,7 @@
 import sqlite3
 
 # Подключаемся к базе данных Flask API (путь может быть другим)
-conn = sqlite3.connect("users.db")
+conn = sqlite3.connect("db.sqlite3.db")
 cursor = conn.cursor()
 
 # Проверяем, есть ли таблица пользователей
