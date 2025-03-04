@@ -14,25 +14,73 @@
         <header class="header">
             <h1><i class="fas fa-sparkles"></i> Система заявок на аниматоров <i class="fas fa-sparkles"></i></h1>
             <p>Организуйте незабываемый детский праздник с нашими аниматорами!</p>
+            <div class="auth-buttons">
+                {% if user.is_authenticated %}
+                    <p class="greeting">Привет, <span>{{ user.username }}</span>!
+                    {% if user.groups.all %}
+                        Вы вошли как: <strong>{{ user.groups.all.0.name }}</strong>.
+                    {% endif %}
+                    </p>
+                    <div class="buttons">
+                        <a href="{% url 'create_request' %}" class="btn btn-primary"><i class="fas fa-plus"></i> Создать заявку</a>
+                        <a href="{% url 'logout' %}" class="btn btn-secondary"><i class="fas fa-sign-out-alt"></i> Выйти</a>
+                    </div>
+                {% else %}
+                    <div class="buttons">
+                        <a href="{% url 'login' %}" class="btn btn-primary"><i class="fas fa-sign-in-alt"></i> Вход</a>
+                        <a href="{% url 'register' %}" class="btn btn-secondary"><i class="fas fa-user-plus"></i> Регистрация</a>
+                    </div>
+                {% endif %}
+            </div>
         </header>
 
-        <div class="content">
-            {% if user.is_authenticated %}
-                <p class="greeting">Привет, <span>{{ user.username }}</span>!
-                {% if user.groups.all %}
-                    Вы вошли как: <strong>{{ user.groups.all.0.name }}</strong>.
-                {% endif %}
-                </p>
-                <div class="buttons">
-                    <a href="{% url 'create_request' %}" class="btn btn-primary"><i class="fas fa-plus"></i> Создать заявку</a>
-                    <a href="{% url 'logout' %}" class="btn btn-secondary"><i class="fas fa-sign-out-alt"></i> Выйти</a>
+        <section class="animators">
+            <h2>Наши аниматоры</h2>
+            <div class="animator-cards">
+                <!-- Первые три карточки (существующие) -->
+                <div class="card" data-animator='{"name": "Анна - Фея", "description": "Анна создаёт волшебные шоу для детей всех возрастов. Её программы включают сказочные истории, танцы и интерактивные игры, которые оставляют незабываемые впечатления.", "image": "{% static 'images/animator1.jpg' %}"}'>
+                    <img src="{% static 'images/animator1.jpg' %}" alt="Аниматор 1" class="card-img">
+                    <h3>Анна - Фея</h3>
+                    <p>Создаёт волшебные шоу для детей всех возрастов.</p>
                 </div>
-            {% else %}
-                <div class="buttons">
-                    <a href="{% url 'login' %}" class="btn btn-primary"><i class="fas fa-sign-in-alt"></i> Вход</a>
-                    <a href="{% url 'register' %}" class="btn btn-secondary"><i class="fas fa-user-plus"></i> Регистрация</a>
+                <div class="card" data-animator='{"name": "Игорь - Пират", "description": "Игорь предлагает энергичные игры и приключения для маленьких пиратов. Его шоу включают пиратские битвы, поиск сокровищ и весёлые конкурсы.", "image": "{% static 'images/animator2.jpg' %}"}'>
+                    <img src="{% static 'images/animator2.jpg' %}" alt="Аниматор 2" class="card-img">
+                    <h3>Игорь - Пират</h3>
+                    <p>Энергичные игры и приключения для маленьких пиратов.</p>
                 </div>
-            {% endif %}
+                <div class="card" data-animator='{"name": "Марина - Принцесса", "description": "Марина погружает детей в мир сказок с её ролью принцессы. Она проводит танцевальные мастер-классы, рассказывает истории и играет в интерактивные игры.", "image": "{% static 'images/animator3.jpg' %}"}'>
+                    <img src="{% static 'images/animator3.jpg' %}" alt="Аниматор 3" class="card-img">
+                    <h3>Марина - Принцесса</h3>
+                    <p>Сказочные истории и танцы для девочек.</p>
+                </div>
+                <!-- Новые три карточки -->
+                <div class="card" data-animator='{"name": "Олег - Супергерой", "description": "Олег вдохновляет детей на подвиги в роли супергероя. Его программа включает трюки, соревнования и уроки смелости для маленьких героев.", "image": "{% static 'images/animator4.jpg' %}"}'>
+                    <img src="{% static 'images/animator4.jpg' %}" alt="Аниматор 4" class="card-img">
+                    <h3>Олег - Супергерой</h3>
+                    <p>Динамичные представления и уроки смелости для детей.</p>
+                </div>
+                <div class="card" data-animator='{"name": "Екатерина - Клоун", "description": "Екатерина радует детей своими шутками, трюками и весёлыми конкурсами в роли клоуна. Её шоу всегда оставляет море смеха и радости.", "image": "{% static 'images/animator5.jpg' %}"}'>
+                    <img src="{% static 'images/animator5.jpg' %}" alt="Аниматор 5" class="card-img">
+                    <h3>Екатерина - Клоун</h3>
+                    <p>Смешные шутки и трюки для весёлого праздника.</p>
+                </div>
+                <div class="card" data-animator='{"name": "Алексей - Волшебник", "description": "Алексей удивляет детей фокусами и магическими трюками. Его шоу включает интерактивные элементы и обучение простым волшебным приёмам.", "image": "{% static 'images/animator6.jpg' %}"}'>
+                    <img src="{% static 'images/animator6.jpg' %}" alt="Аниматор 6" class="card-img">
+                    <h3>Алексей - Волшебник</h3>
+                    <p>Фокусы и магические трюки для удивительных моментов.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Модальное окно -->
+        <div class="modal" id="animatorModal">
+            <div class="modal-content">
+                <span class="close-btn">×</span>
+                <img src="" alt="Аниматор" class="modal-img">
+                <h2 class="modal-name"></h2>
+                <p class="modal-description"></p>
+                <div class="modal-action"></div> <!-- Контейнер для кнопки или сообщения -->
+            </div>
         </div>
 
         {% if messages %}
@@ -46,8 +94,69 @@
         {% endif %}
 
         <footer class="footer">
-            <p><i class="fas fa-copyright"></i> 2025 Сказочные праздники для ваших детей</p>
+            <div class="footer-content">
+                <p><i class="fas fa-copyright"></i> 2025 Сказочные праздники для ваших детей</p>
+                <p>Создаём радость и волшебство для каждого праздника!</p>
+                <div class="social-links">
+                    <a href="https://instagram.com" target="_blank" class="social-link"><i class="fab fa-instagram"></i></a>
+                    <a href="https://facebook.com" target="_blank" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                    <a href="https://t.me" target="_blank" class="social-link"><i class="fab fa-telegram"></i></a>
+                </div>
+            </div>
         </footer>
     </div>
+
+    <!-- Подключение JavaScript -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const cards = document.querySelectorAll('.card');
+            const modal = document.getElementById('animatorModal');
+            const modalImg = document.querySelector('.modal-img');
+            const modalName = document.querySelector('.modal-name');
+            const modalDescription = document.querySelector('.modal-description');
+            const modalAction = document.querySelector('.modal-action');
+            const closeBtn = document.querySelector('.close-btn');
+
+            // Передаем информацию о пользователе из Django в JavaScript
+            const isAuthenticated = {{ user.is_authenticated|lower }};
+
+            cards.forEach(card => {
+                card.addEventListener('click', () => {
+                    const animatorData = JSON.parse(card.getAttribute('data-animator'));
+                    modalImg.src = animatorData.image;
+                    modalName.textContent = animatorData.name;
+                    modalDescription.textContent = animatorData.description;
+
+                    // Проверяем, авторизован ли пользователь
+                    if (isAuthenticated) {
+                        modalAction.innerHTML = `
+                            <button class="btn btn-primary modal-book"><i class="fas fa-calendar"></i> Забронировать</button>
+                        `;
+                        const bookBtn = modalAction.querySelector('.modal-book');
+                        bookBtn.addEventListener('click', () => {
+                            // Здесь можно добавить реальную логику бронирования, например, перенаправление на страницу создания заявки
+                            window.location.href = "{% url 'create_request' %}"; // Перенаправление на страницу создания заявки
+                        });
+                    } else {
+                        modalAction.innerHTML = `
+                            <p class="modal-notice">Для бронирования необходимо <a href="{% url 'login' %}" class="link">войти</a> или <a href="{% url 'register' %}" class="link">зарегистрироваться</a>.</p>
+                        `;
+                    }
+
+                    modal.style.display = 'flex';
+                });
+            });
+
+            closeBtn.addEventListener('click', () => {
+                modal.style.display = 'none';
+            });
+
+            window.addEventListener('click', (event) => {
+                if (event.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+        });
+    </script>
 </body>
 </html>
