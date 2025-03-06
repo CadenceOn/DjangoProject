@@ -27,7 +27,4 @@ __pycache__/
 # Статические файлы, собранные collectstatic (если есть)
 staticfiles/
 
-#миграции
-DjangoProject/migrations/
-*.py
 
