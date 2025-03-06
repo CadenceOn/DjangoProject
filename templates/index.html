@@ -28,6 +28,7 @@
                         <a href="{% url 'create_request' %}" class="btn btn-primary"><i class="fas fa-plus"></i> Создать заявку</a>
                         <a href="{% url 'offer_list' %}" class="btn btn-primary"><i class="fas fa-list"></i> Посмотреть объявления аниматоров</a>
                     {% endif %}
+
                     <a href="{% url 'logout' %}" class="btn btn-secondary"><i class="fas fa-sign-out-alt"></i> Выйти</a>
                 </div>
             {% else %}
@@ -41,7 +42,6 @@
         <section class="animators">
             <h2>Наши аниматоры</h2>
             <div class="animator-cards">
-                <!-- Первые три карточки (существующие) -->
                 <div class="card" data-animator='{"name": "Анна - Фея", "description": "Анна создаёт волшебные шоу для детей всех возрастов. Её программы включают сказочные истории, танцы и интерактивные игры, которые оставляют незабываемые впечатления.", "image": "{% static 'images/animator1.jpg' %}"}'>
                     <img src="{% static 'images/animator1.jpg' %}" alt="Аниматор 1" class="card-img">
                     <h3>Анна - Фея</h3>
@@ -57,7 +57,6 @@
                     <h3>Марина - Принцесса</h3>
                     <p>Сказочные истории и танцы для девочек.</p>
                 </div>
-                <!-- Новые три карточки -->
                 <div class="card" data-animator='{"name": "Олег - Супергерой", "description": "Олег вдохновляет детей на подвиги в роли супергероя. Его программа включает трюки, соревнования и уроки смелости для маленьких героев.", "image": "{% static 'images/animator4.jpg' %}"}'>
                     <img src="{% static 'images/animator4.jpg' %}" alt="Аниматор 4" class="card-img">
                     <h3>Олег - Супергерой</h3>
@@ -76,17 +75,23 @@
             </div>
         </section>
 
-        <!-- Модальное окно -->
         <div class="modal" id="animatorModal">
             <div class="modal-content">
                 <span class="close-btn">×</span>
                 <img src="" alt="Аниматор" class="modal-img">
                 <h2 class="modal-name"></h2>
                 <p class="modal-description"></p>
-                <div class="modal-action"></div> <!-- Контейнер для кнопки или сообщения -->
+                <div class="modal-action"></div>
             </div>
         </div>
 
+        <div class="modal" id="supportModal">
+            <div class="modal-support-content">
+                <span class="close-support-btn">×</span>
+                <h2><i class="fas fa-headset"></i> Связаться с поддержкой</h2>
+                <div class="support-form-container"></div>
+            </div>
+        </div>
         {% if messages %}
             <div class="messages">
                 {% for message in messages %}
@@ -96,7 +101,6 @@
                 {% endfor %}
             </div>
         {% endif %}
-
         <footer class="footer">
             <div class="footer-content">
                 <p><i class="fas fa-copyright"></i> 2025 Сказочные праздники для ваших детей</p>
@@ -106,11 +110,10 @@
                     <a href="https://facebook.com" target="_blank" class="social-link"><i class="fab fa-facebook-f"></i></a>
                     <a href="https://t.me" target="_blank" class="social-link"><i class="fab fa-telegram"></i></a>
                 </div>
+                <button class="btn btn-support" id="supportBtn"><i class="fas fa-headset"></i> Поддержка</button>
             </div>
         </footer>
     </div>
-
-    <!-- Подключение JavaScript -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const cards = document.querySelectorAll('.card');
@@ -120,10 +123,11 @@
             const modalDescription = document.querySelector('.modal-description');
             const modalAction = document.querySelector('.modal-action');
             const closeBtn = document.querySelector('.close-btn');
-
-            // Передаем информацию о пользователе из Django в JavaScript
+            const supportBtn = document.getElementById('supportBtn');
+            const supportModal = document.getElementById('supportModal');
+            const supportFormContainer = supportModal.querySelector('.support-form-container');
+            const closeSupportBtn = supportModal.querySelector('.close-support-btn');
             const isAuthenticated = {{ user.is_authenticated|lower }};
-
             cards.forEach(card => {
                 card.addEventListener('click', () => {
                     const animatorData = JSON.parse(card.getAttribute('data-animator'));
@@ -131,15 +135,13 @@
                     modalName.textContent = animatorData.name;
                     modalDescription.textContent = animatorData.description;
 
-                    // Проверяем, авторизован ли пользователь
                     if (isAuthenticated) {
                         modalAction.innerHTML = `
                             <button class="btn btn-primary modal-book"><i class="fas fa-calendar"></i> Забронировать</button>
                         `;
                         const bookBtn = modalAction.querySelector('.modal-book');
                         bookBtn.addEventListener('click', () => {
-                            // Здесь можно добавить реальную логику бронирования, например, перенаправление на страницу создания заявки
-                            window.location.href = "{% url 'create_request' %}"; // Перенаправление на страницу создания заявки
+                            window.location.href = "{% url 'create_request' %}";
                         });
                     } else {
                         modalAction.innerHTML = `
@@ -158,6 +160,42 @@
             window.addEventListener('click', (event) => {
                 if (event.target === modal) {
                     modal.style.display = 'none';
+                }
+            });
+
+            // Логика для кнопки поддержки
+            supportBtn.addEventListener('click', () => {
+                if (isAuthenticated) {
+                    supportFormContainer.innerHTML = `
+                        <form class="support-form">
+                            <textarea placeholder="Опишите ваш вопрос или проблему..." required></textarea>
+                            <button type="submit"><i class="fas fa-paper-plane"></i> Отправить</button>
+                        </form>
+                    `;
+                    const form = supportFormContainer.querySelector('.support-form');
+                    form.addEventListener('submit', (e) => {
+                        e.preventDefault();
+                        alert('Ваш вопрос отправлен в поддержку!');
+                        supportModal.style.display = 'none';
+                    });
+                } else {
+                    supportFormContainer.innerHTML = `
+                        <p class="support-notice">Для связи с поддержкой необходимо
+                            <a href="{% url 'login' %}">войти</a> или
+                            <a href="{% url 'register' %}">зарегистрироваться</a>.
+                        </p>
+                    `;
+                }
+                supportModal.style.display = 'flex';
+            });
+
+            closeSupportBtn.addEventListener('click', () => {
+                supportModal.style.display = 'none';
+            });
+
+            window.addEventListener('click', (event) => {
+                if (event.target === supportModal) {
+                    supportModal.style.display = 'none';
                 }
             });
         });
