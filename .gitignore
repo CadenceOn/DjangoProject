@@ -1,5 +1,5 @@
 # База данных SQLite
-db.sqlite3
+*.sqlite3
 
 # Виртуальное окружение
 .venv
@@ -26,4 +26,8 @@ __pycache__/
 
 # Статические файлы, собранные collectstatic (если есть)
 staticfiles/
+
+#миграции
+DjangoProject/migrations/
+*.py
 
