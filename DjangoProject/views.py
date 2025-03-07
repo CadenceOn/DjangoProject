@@ -36,9 +36,9 @@ def register_view(request):
             user = form.save()
             role = form.cleaned_data.get('role')
             if role == 'customer':
-                group, _ = Group.objects.get_or_create(name='customer')
+                group, _ = Group.objects.get_or_create(name='пользователь')
             else:
-                group, _ = Group.objects.get_or_create(name='animator')
+                group, _ = Group.objects.get_or_create(name='аниматор')
             user.groups.add(group)
             username = form.cleaned_data.get('username')
             messages.success(request, f"Аккаунт для {username} успешно создан! Теперь вы можете войти.")
