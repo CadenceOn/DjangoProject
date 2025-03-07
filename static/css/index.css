@@ -1,140 +1,176 @@
-
 body {
     font-family: 'Inter', sans-serif;
     margin: 0;
     padding: 0;
     min-height: 100vh;
-    background: linear-gradient(135deg, #f8f9fa, #e9ecef); /* Нейтральный градиент */
+    background: linear-gradient(135deg, #f8f9fa, #e9ecef);
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
 }
 
-.container {
-    width: 100%;
-    max-width: 1200px;
-    margin: 20px auto;
-    padding: 40px;
+.navbar {
     background: white;
-    border-radius: 12px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    animation: fadeIn 1s ease-in;
+    padding: 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    width: 100%;
 }
 
-/* Анимация появления */
+.nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.logo {
+    font-size: 1.8em;
+    color: #ff4d6d;
+    margin: 0;
+    font-weight: 700;
+}
+
+.auth-section {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.user-info {
+    color: #333;
+    font-size: 1.1em;
+}
+
+.user-info span {
+    color: #ff4d6d;
+    font-weight: 600;
+}
+
+.nav-buttons {
+    display: flex;
+    gap: 15px;
+}
+
+.nav-btn {
+    padding: 10px 20px;
+    background: #ff4d6d;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: 1em;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.nav-btn:hover {
+    background: #e43c5d;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(255, 77, 109, 0.3);
+}
+
+.main-content {
+    flex: 1;
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 0 20px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.hero {
+    text-align: center;
+    padding: 40px 0;
+    animation: fadeIn 1s ease-in;
+    width: 100%;
+    max-width: 800px;
+}
+
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(20px); }
     to { opacity: 1; transform: translateY(0); }
 }
 
-/* Заголовок */
-.header h1 {
+.hero h2 {
     font-size: 2.5em;
-    color: #ff4d6d; /* Яркий акцентный цвет */
-    margin-bottom: 10px;
-    font-weight: 700;
-    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.05);
+    color: #ff4d6d;
+    margin-bottom: 15px;
 }
 
-.header p {
+.hero p {
     font-size: 1.2em;
     color: #666;
     margin-bottom: 20px;
 }
 
-/* Блок приветствия и кнопок */
-.auth-buttons {
-    margin: 40px 0; /* Увеличиваем отступы для визуального отделения */
-    padding: 20px 0; /* Добавляем внутренние отступы */
-}
-
-/* Приветствие */
-.greeting {
-    font-size: 1.3em;
-    color: #333;
-    margin-bottom: 15px;
-}
-
-.greeting span {
-    color: #ff4d6d;
-    font-weight: 600;
-}
-
-/* Кнопки */
-.buttons {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    flex-wrap: wrap;
-}
-
-.btn {
+.hero-btn {
+    padding: 12px 24px;
+    background: #ff4d6d;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: 1.1em;
+    transition: all 0.3s ease;
     display: inline-flex;
     align-items: center;
-    padding: 12px 24px;
-    text-decoration: none;
-    font-size: 1.1em;
-    border-radius: 8px;
-    transition: all 0.3s ease;
-    font-weight: 500;
     gap: 8px;
 }
 
-.btn-primary {
-    background-color: #ff4d6d;
-    color: white;
-    border: none;
-}
-
-.btn-primary:hover {
-    background-color: #e43c5d;
+.hero-btn:hover {
+    background: #e43c5d;
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(255, 77, 109, 0.3);
 }
 
-.btn-secondary {
-    background-color: #4dabf7;
-    color: white;
-    border: none;
+.animators-grid {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
-.btn-secondary:hover {
-    background-color: #339af0;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(77, 171, 247, 0.3);
-}
-
-/* Секция аниматоров */
-.animators h2 {
+.animators-grid h2 {
     font-size: 2em;
     color: #ff4d6d;
+    text-align: center;
     margin: 40px 0 20px;
 }
 
-.animator-cards {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 20px;
+    justify-content: center;
+    padding: 0 20px;
 }
 
-.card {
-    width: 300px;
-    padding: 20px;
-    background: #fff;
+.animator-card {
+    background: white;
     border-radius: 12px;
+    padding: 20px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease;
     cursor: pointer;
+    width: 280px;
+    height: 400px;
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
 }
 
-.card:hover {
+.animator-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
 }
 
-.card-img {
+.animator-card img {
     width: 100%;
     height: 200px;
     object-fit: cover;
@@ -142,18 +178,128 @@ body {
     margin-bottom: 15px;
 }
 
-.card h3 {
+.card-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.card-content h3 {
     font-size: 1.5em;
     color: #333;
     margin-bottom: 10px;
 }
 
-.card p {
+.card-content p {
+    font-size: 1em;
+    color: #666;
+    margin: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+}
+
+.sidebar {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.notifications {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.notification {
+    padding: 12px 20px;
+    border-radius: 8px;
+    background: white;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    animation: fadeIn 0.5s ease-out;
+    transition: opacity 0.5s ease; /* Добавляем анимацию исчезновения */
+}
+
+.notification.success { background: #d4f4d4; color: #155724; }
+.notification.error { background: #f8d7da; color: #721c24; }
+
+.notification.fade-out {
+    opacity: 0;
+}
+
+.support-widget {
+    text-align: right;
+}
+
+.support-toggle {
+    padding: 10px 20px;
+    background: #ff4d6d;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.support-toggle:hover {
+    background: #e43c5d;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(255, 77, 109, 0.3);
+}
+
+.footer {
+    background: white;
+    padding: 20px;
+    border-top: 1px solid #e9ecef;
+    margin-top: auto;
+    width: 100%;
+}
+
+.footer-grid {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    text-align: center;
+}
+
+.footer-section h3 {
+    font-size: 1.2em;
+    color: #ff4d6d;
+    margin-bottom: 10px;
+}
+
+.footer-section p {
     font-size: 1em;
     color: #666;
 }
 
-/* Модальное окно (общее) */
+.social-icons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.social-icons a {
+    color: #ff4d6d;
+    font-size: 1.5em;
+    transition: color 0.3s ease;
+}
+
+.social-icons a:hover {
+    color: #e43c5d;
+}
+
 .modal {
     display: none;
     position: fixed;
@@ -175,9 +321,10 @@ body {
     width: 90%;
     position: relative;
     animation: fadeIn 0.3s ease;
+    margin: 0 auto;
 }
 
-.close-btn {
+.modal-close {
     position: absolute;
     top: 15px;
     right: 15px;
@@ -186,7 +333,7 @@ body {
     color: #666;
 }
 
-.modal-img {
+.modal-image {
     width: 100%;
     height: 250px;
     object-fit: cover;
@@ -194,308 +341,152 @@ body {
     margin-bottom: 15px;
 }
 
-.modal-name {
+.modal-title {
     font-size: 1.8em;
     color: #ff4d6d;
     margin-bottom: 10px;
 }
 
-.modal-description {
+.modal-text {
     font-size: 1em;
     color: #666;
+    margin-bottom: 10px;
+}
+
+.modal-price {
+    font-size: 1.2em;
+    color: #ff4d6d;
+    font-weight: 600;
     margin-bottom: 20px;
 }
 
-.modal-action {
-    text-align: center;
-}
-
-.modal-book {
-    background-color: #ff4d6d;
-    color: white;
+.modal-actions .btn {
     padding: 12px 24px;
-    border-radius: 8px;
+    background: #ff4d6d;
+    color: white;
     border: none;
+    border-radius: 8px;
     font-size: 1.1em;
     cursor: pointer;
     transition: all 0.3s ease;
 }
 
-.modal-book:hover {
-    background-color: #e43c5d;
+.modal-actions .btn:hover {
+    background: #e43c5d;
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(255, 77, 109, 0.3);
 }
 
-.modal-notice {
-    font-size: 1em;
+.modal-actions p {
     color: #666;
 }
 
-.modal-notice .link {
-    color: #4dabf7;
+.modal-actions a {
+    color: #ff4d6d;
     text-decoration: none;
 }
 
-.modal-notice .link:hover {
+.modal-actions a:hover {
     text-decoration: underline;
 }
 
-/* Модальное окно поддержки */
-.modal#supportModal {
-    display: none;
-    position: fixed;
-    z-index: 1000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    align-items: center;
-    justify-content: center;
-}
-
-.modal-support-content {
-    background: linear-gradient(135deg, #ffffff 0%, #f9f9f9 100%);
-    padding: 30px;
-    border-radius: 15px;
-    width: 90%;
-    max-width: 500px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-    position: relative;
-    animation: slideIn 0.3s ease-out;
-}
-
-@keyframes slideIn {
-    from {
-        transform: translateY(-50px);
-        opacity: 0;
-    }
-    to {
-        transform: translateY(0);
-        opacity: 1;
-    }
-}
-
-.close-support-btn {
-    position: absolute;
-    top: 15px;
-    right: 20px;
-    font-size: 30px;
-    color: #666;
-    cursor: pointer;
-    transition: color 0.3s ease;
-}
-
-.close-support-btn:hover {
-    color: #000;
-}
-
-.support-form-container h2 {
-    margin: 0 0 20px;
-    color: #333;
-    font-size: 24px;
-    text-align: center;
-}
-
-.support-form {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-
-.support-form textarea {
+.support-modal .support-form textarea {
     width: 100%;
     min-height: 100px;
     padding: 12px;
     border: 2px solid #ddd;
     border-radius: 10px;
     resize: vertical;
-    font-size: 16px;
-    transition: border-color 0.3s ease;
+    font-size: 1em;
+    margin-bottom: 15px;
 }
 
-.support-form textarea:focus {
-    border-color: #4CAF50;
-    outline: none;
-}
-
-.support-form button {
-    background-color: #4CAF50;
+.support-modal .support-form button {
+    padding: 12px 24px;
+    background: #ff4d6d;
     color: white;
-    padding: 12px;
     border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    font-size: 16px;
-    transition: all 0.3s ease;
-}
-
-.support-form button:hover {
-    background-color: #45a049;
-    transform: translateY(-2px);
-}
-
-.support-notice {
-    text-align: center;
-    color: #666;
-    font-size: 16px;
-}
-
-.support-notice a {
-    color: #4CAF50;
-    text-decoration: none;
-    font-weight: 600;
-}
-
-.support-notice a:hover {
-    text-decoration: underline;
-}
-
-/* Сообщения */
-.messages {
-    margin: 20px 0;
-}
-
-.message {
-    padding: 12px 20px;
-    margin: 10px 0;
     border-radius: 8px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 1em;
-    animation: fadeIn 0.5s ease-out;
-}
-
-.message.success { background-color: #d4f4d4; color: #155724; }
-.message.error { background-color: #f8d7da; color: #721c24; }
-
-.message i {
     font-size: 1.1em;
-}
-
-/* Футер */
-.footer {
-    margin-top: 40px;
-    padding-top: 20px;
-    border-top: 1px solid #e9ecef;
-}
-
-.footer-content p {
-    font-size: 1em;
-    color: #666;
-    margin: 5px 0;
-}
-
-.social-links {
-    margin-top: 10px;
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-}
-
-.social-link {
-    color: #ff4d6d;
-    font-size: 1.5em;
-    transition: color 0.3s ease;
-}
-
-.social-link:hover {
-    color: #e43c5d;
-}
-
-.btn-support {
-    background-color: #4CAF50;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 25px;
     cursor: pointer;
-    font-size: 16px;
     transition: all 0.3s ease;
-    margin-top: 15px;
 }
 
-.btn-support:hover {
-    background-color: #45a049;
+.support-modal .support-form button:hover {
+    background: #e43c5d;
     transform: translateY(-2px);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 12px rgba(255, 77, 109, 0.3);
 }
 
-/* Адаптивность для мобильных устройств */
+.call-modal .call-form input {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #ddd;
+    border-radius: 10px;
+    font-size: 1em;
+    margin-bottom: 15px;
+}
+
+.call-modal .call-form button {
+    padding: 12px 24px;
+    background: #ff4d6d;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.call-modal .call-form button:hover {
+    background: #e43c5d;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(255, 77, 109, 0.3);
+}
+
 @media (max-width: 768px) {
-    .container {
-        margin: 10px;
-        padding: 20px;
-    }
-
-    .header h1 {
-        font-size: 2em;
-    }
-
-    .header p {
-        font-size: 1em;
-    }
-
-    .auth-buttons {
-        margin: 15px 0;
-    }
-
-    .greeting {
-        font-size: 1.1em;
-    }
-
-    .btn {
-        padding: 10px 20px;
-        font-size: 1em;
-        width: 100%;
-        justify-content: center;
-    }
-
-    .buttons {
+    .nav-container {
         flex-direction: column;
         gap: 15px;
     }
 
-    .animators h2 {
-        font-size: 1.5em;
-    }
-
-    .card {
+    .nav-buttons {
+        flex-direction: column;
         width: 100%;
     }
 
-    .card-img {
-        height: 150px;
+    .nav-btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .hero h2 {
+        font-size: 2em;
+    }
+
+    .hero p {
+        font-size: 1em;
+    }
+
+    .animators-grid h2 {
+        font-size: 1.5em;
+    }
+
+    .animator-card {
+        width: 100%;
+        height: 380px;
+    }
+
+    .animator-card img {
+        height: 180px;
     }
 
     .modal-content {
         padding: 20px;
-    }
-
-    .modal-img {
-        height: 200px;
-    }
-
-    .modal-name {
-        font-size: 1.5em;
-    }
-
-    .modal-support-content {
-        padding: 20px;
         width: 95%;
     }
 
-    .support-form-container h2 {
-        font-size: 20px;
-    }
-
-    .support-form textarea {
-        font-size: 14px;
-    }
-
-    .support-form button {
-        font-size: 14px;
+    .modal-image {
+        height: 200px;
     }
 }
