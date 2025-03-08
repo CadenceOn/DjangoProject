@@ -1,0 +1,151 @@
+/* Общие стили */
+body {
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #f8f9fa, #e9ecef); /* Нейтральный градиент */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 40px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    animation: fadeIn 1s ease-in;
+}
+
+/* Анимация появления */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Заголовок */
+h1 {
+    font-size: 2.5em;
+    color: #ff4d6d; /* Яркий акцентный цвет */
+    margin-bottom: 20px;
+    font-weight: 700;
+    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* Таблица */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+table th, table td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid #e9ecef;
+}
+
+table th {
+    background-color: #ff4d6d;
+    color: white;
+    font-weight: 600;
+}
+
+table td {
+    background-color: #fff;
+    color: #333;
+}
+
+table tr:last-child td {
+    border-bottom: none;
+}
+
+table tr:nth-child(even) td {
+    background-color: #f8f9fa;
+}
+
+/* Кнопки */
+.buttons {
+    margin: 30px 0;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    padding: 12px 24px;
+    text-decoration: none;
+    font-size: 1.1em;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    font-weight: 500;
+    gap: 8px;
+}
+
+.btn-primary {
+    background-color: #ff4d6d;
+    color: white;
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: #e43c5d;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(255, 77, 109, 0.3);
+}
+
+.btn-secondary {
+    background-color: #4dabf7;
+    color: white;
+    border: none;
+}
+
+.btn-secondary:hover {
+    background-color: #339af0;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(77, 171, 247, 0.3);
+}
+
+/* Адаптивность для мобильных устройств */
+@media (max-width: 768px) {
+    .container {
+        margin: 10px;
+        padding: 20px;
+    }
+
+    h1 {
+        font-size: 2em;
+    }
+
+    table {
+        font-size: 0.9em;
+    }
+
+    table th, table td {
+        padding: 10px;
+    }
+
+    .btn {
+        padding: 10px 20px;
+        font-size: 1em;
+        width: 100%;
+        justify-content: center;
+    }
+
+    .buttons {
+        flex-direction: column;
+        gap: 15px;
+    }
+}
