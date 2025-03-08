@@ -36,9 +36,9 @@ def register_view(request):
             user = form.save()
             role = form.cleaned_data.get('role')
             if role == 'customer':
-                group, _ = Group.objects.get_or_create(name='пользователь')
+                group, _ = Group.objects.get_or_create(name='customer')
             else:
-                group, _ = Group.objects.get_or_create(name='аниматор')
+                group, _ = Group.objects.get_or_create(name='animator')
             user.groups.add(group)
             username = form.cleaned_data.get('username')
             messages.success(request, f"Аккаунт для {username} успешно создан! Теперь вы можете войти.")
@@ -57,6 +57,9 @@ def logout_view(request):
 def is_customer(user):
     return user.groups.filter(name='customer').exists()
 
+def is_animator(user):
+    return user.groups.filter(name='animator').exists()
+
 @login_required
 @user_passes_test(is_customer, login_url='index')
 def create_request(request):
@@ -73,9 +76,6 @@ def create_request(request):
     else:
         form = RequestForm()
     return render(request, 'create_request.html', {'form': form})
-
-def is_animator(user):
-    return user.groups.filter(name='animator').exists()
 
 @login_required
 @user_passes_test(is_animator, login_url='index')
