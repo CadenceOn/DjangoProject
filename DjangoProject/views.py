@@ -1,34 +1,25 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.forms import AuthenticationForm
-from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib import messages
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.models import User, Group
 from .forms import RegisterForm, RequestForm, AnimatorOfferForm
 from .models import Request, AnimatorOffer
+import json
 
+# Проверка ролей
+def is_customer(user):
+    return user.groups.filter(name='customer').exists()
+
+def is_animator(user):
+    return user.groups.filter(name='animator').exists()
+
+# Главная страница
 def index(request):
-    return render(request, 'index.html')
+    offers = AnimatorOffer.objects.all()
+    return render(request, 'index.html', {'offers': offers})
 
-def login_view(request):
-    if request.method == 'POST':
-        form = AuthenticationForm(request, data=request.POST)
-        if form.is_valid():
-            username = form.cleaned_data.get('username')
-            password = form.cleaned_data.get('password')
-            user = authenticate(request, username=username, password=password)
-            if user is not None:
-                login(request, user)
-                messages.success(request, f"Добро пожаловать, {username}!")
-                return redirect('index')
-            else:
-                messages.error(request, "Неверное имя пользователя или пароль.")
-        else:
-            messages.error(request, "Пожалуйста, исправьте ошибки в форме.")
-    else:
-        form = AuthenticationForm()
-    return render(request, 'login.html', {'form': form})
-
+# Регистрация
 def register_view(request):
     if request.method == 'POST':
         form = RegisterForm(request.POST)
@@ -49,19 +40,27 @@ def register_view(request):
         form = RegisterForm()
     return render(request, 'register.html', {'form': form})
 
+# Вход
+def login_view(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect('index')
+        else:
+            messages.error(request, 'Неверное имя пользователя или пароль.')
+    return render(request, 'login.html')
+
+# Выход
 def logout_view(request):
     logout(request)
-    messages.success(request, "Вы успешно вышли из системы.")
     return redirect('index')
 
-def is_customer(user):
-    return user.groups.filter(name='customer').exists()
-
-def is_animator(user):
-    return user.groups.filter(name='animator').exists()
-
+# Создание заявки (для пользователей)
 @login_required
-@user_passes_test(is_customer, login_url='index')
+@user_passes_test(is_customer)
 def create_request(request):
     if request.method == 'POST':
         form = RequestForm(request.POST)
@@ -69,48 +68,74 @@ def create_request(request):
             new_request = form.save(commit=False)
             new_request.customer = request.user
             new_request.save()
-            messages.success(request, "Заявка успешно создана!")
+            messages.success(request, 'Заявка успешно создана!')
             return redirect('index')
         else:
-            messages.error(request, "Пожалуйста, исправьте ошибки в форме: " + str(form.errors))
+            messages.error(request, 'Пожалуйста, исправьте ошибки в форме.')
     else:
         form = RequestForm()
     return render(request, 'create_request.html', {'form': form})
 
+# Создание объявления (для аниматоров)
 @login_required
-@user_passes_test(is_animator, login_url='index')
+@user_passes_test(is_animator)
 def create_offer(request):
     if request.method == 'POST':
-        form = AnimatorOfferForm(request.POST)
+        form = AnimatorOfferForm(request.POST, request.FILES)
         if form.is_valid():
-            new_offer = form.save(commit=False)
-            new_offer.animator = request.user
-            new_offer.save()
-            messages.success(request, "Объявление успешно создано!")
+            offer = form.save(commit=False)
+            offer.animator = request.user
+            offer.save()
+            messages.success(request, 'Объявление успешно создано!')
             return redirect('index')
         else:
-            messages.error(request, "Пожалуйста, исправьте ошибки в форме: " + str(form.errors))
+            messages.error(request, 'Пожалуйста, исправьте ошибки в форме.')
     else:
         form = AnimatorOfferForm()
     return render(request, 'create_offer.html', {'form': form})
 
-@login_required
-@user_passes_test(is_customer, login_url='index')
+# Список объявлений (для пользователей)
 def offer_list(request):
     offers = AnimatorOffer.objects.all()
     return render(request, 'offer_list.html', {'offers': offers})
 
+# Выбор объявления (для пользователей)
 @login_required
-@user_passes_test(is_customer, login_url='index')
+@user_passes_test(is_customer)
 def select_offer(request, offer_id):
-    offer = AnimatorOffer.objects.get(id=offer_id)
-    # Проверяем, есть ли у пользователя незавершённая заявка
-    user_request = Request.objects.filter(customer=request.user, status='new').first()
-    if user_request:
-        user_request.animator = offer.animator  # Привязываем аниматора к заявке
-        user_request.status = 'accepted'
-        user_request.save()
-        messages.success(request, f"Вы выбрали объявление от {offer.animator.username}!")
+    offer = get_object_or_404(AnimatorOffer, id=offer_id)
+    request_obj = Request.objects.filter(customer=request.user, animator__isnull=True).first()
+    if request_obj:
+        request_obj.animator = offer.animator
+        request_obj.status = 'accepted'
+        request_obj.save()
+        messages.success(request, 'Аниматор успешно выбран!')
     else:
-        messages.error(request, "У вас нет активных заявок. Сначала создайте заявку.")
+        messages.error(request, 'У вас нет активных заявок.')
     return redirect('offer_list')
+
+# Просмотр заявок (для аниматоров)
+@login_required
+@user_passes_test(is_animator)
+def view_requests(request):
+    requests = Request.objects.filter(animator=request.user, status='accepted')
+    return render(request, 'view_requests.html', {'requests': requests})
+
+# Профиль аниматора (редактирование карточки)
+@login_required
+@user_passes_test(is_animator)
+def my_profile(request):
+    offer = AnimatorOffer.objects.filter(animator=request.user).first()
+    if request.method == 'POST':
+        form = AnimatorOfferForm(request.POST, request.FILES, instance=offer)
+        if form.is_valid():
+            offer = form.save(commit=False)
+            offer.animator = request.user
+            offer.save()
+            messages.success(request, 'Карточка успешно обновлена!')
+            return redirect('my_profile')
+        else:
+            messages.error(request, 'Пожалуйста, исправьте ошибки в форме.')
+    else:
+        form = AnimatorOfferForm(instance=offer)
+    return render(request, 'my_profile.html', {'form': form, 'offer': offer})

@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+import json
 
 class Request(models.Model):
     STATUS_CHOICES = [
@@ -22,10 +23,14 @@ class Request(models.Model):
 
 class AnimatorOffer(models.Model):
     animator = models.ForeignKey(User, on_delete=models.CASCADE, related_name='offers')
-    available_date = models.DateTimeField()
+    available_dates = models.TextField(default='[]', help_text='Список доступных дат в формате JSON (например, ["2025-03-10", "2025-03-11"])')
     location = models.CharField(max_length=255)
     description = models.TextField()
+    image = models.ImageField(upload_to='animators/', null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"Объявление от {self.animator.username} на {self.available_date}"
+        return f"Объявление от {self.animator.username}"
+
+    def get_available_dates(self):
+        return json.loads(self.available_dates) if self.available_dates else []

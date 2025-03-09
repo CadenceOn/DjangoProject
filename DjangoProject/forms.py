@@ -3,6 +3,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from .models import Request, AnimatorOffer
 
+
 class RegisterForm(UserCreationForm):
     email = forms.EmailField(required=True, help_text="Введите ваш email.")
     role = forms.ChoiceField(choices=[
@@ -31,7 +32,8 @@ class RequestForm(forms.ModelForm):
 class AnimatorOfferForm(forms.ModelForm):
     class Meta:
         model = AnimatorOffer
-        fields = ['available_date', 'location', 'description']
+        fields = ['available_dates', 'location', 'description', 'image']
         widgets = {
-            'available_date': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
+            'available_dates': forms.TextInput(attrs={'placeholder': 'Введите даты в формате JSON, например: ["2025-03-10", "2025-03-11"]'}),
+            'image': forms.ClearableFileInput(),
         }
